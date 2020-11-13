@@ -11,6 +11,7 @@ namespace CabInvoiceGenerator
     {
         //Variables
         private RideRepository rideRepository;
+        RideType rideType;
         //Constants
         private readonly double MINIMUM_COST_PER_KM;
         private readonly int COST_PER_TIME;
@@ -25,6 +26,38 @@ namespace CabInvoiceGenerator
             this.MINIMUM_COST_PER_KM = 10;
             this.COST_PER_TIME = 1;
             this.MINIMUM_FARE = 5;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InvoiceGenerator"/> class.
+        /// </summary>
+        /// <param name="rideType">Type of the ride.</param>
+        /// <exception cref="CabInvoiceException">invalid ride type</exception>
+        public InvoiceGenerator(RideType rideType)
+        {
+            this.rideRepository = new RideRepository();
+            this.rideType = rideType;
+            try
+            {
+                if (this.rideType.Equals(RideType.NORMAL))
+                {
+                    this.MINIMUM_COST_PER_KM = 10;
+                    this.COST_PER_TIME = 1;
+                    this.MINIMUM_FARE = 5;
+                }
+                if (this.rideType.Equals(RideType.PREMIUM))
+                {
+                    this.MINIMUM_COST_PER_KM = 15;
+                    this.COST_PER_TIME = 2;
+                    this.MINIMUM_FARE = 20;
+                }
+            }
+            catch (CabInvoiceException)
+            {
+                throw new CabInvoiceException(CabInvoiceException.ExceptionType.INVALID_RIDETYPE, "invalid ride type");
+            }
+
+
         }
 
         /// <summary>
