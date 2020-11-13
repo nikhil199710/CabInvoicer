@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Cab_Invoice_Generator
+namespace CabInvoiceGenerator
 {
     public class RideRepository
     {
-        /// <summary>
-        /// Dictionary to store UserId and Rides int List
-        /// </summary>
+        //Dictionary to store UserId and Rides int List.
         Dictionary<string, List<Ride>> userRides = null;
 
         /// <summary>
@@ -22,32 +22,35 @@ namespace Cab_Invoice_Generator
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="rides">The rides.</param>
-        /// <exception cref="Cab_Invoice_Generator.CabInvoiceException">Rides are null</exception>
+        /// <exception cref="CabInvoiceException">Rides are null</exception>
         public void AddRide(string userId, Ride[] rides)
         {
             bool rideList = this.userRides.ContainsKey(userId);
             try
             {
-                if (rideList)
+                if (!rideList)
                 {
                     List<Ride> list = new List<Ride>();
                     list.AddRange(rides);
                     this.userRides.Add(userId, list);
                 }
+                else
+                {
+                    this.userRides[userId].AddRange(rides);
+                }
             }
-            catch (CabInvoiceException)
+            catch
             {
-                throw new CabInvoiceException(CabInvoiceException.ExceptionType.Null_Rides, "Rides are null");
+                throw new CabInvoiceException(CabInvoiceException.ExceptionType.NULL_RIDES, "Rides are null");
             }
         }
 
-
         /// <summary>
-        /// Function to get rides list as an array for specified UserId 
+        /// Gets the rides.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns></returns>
-        /// <exception cref="Cab_Invoice_Generator.CabInvoiceException"></exception>
+        /// <exception cref="CabInvoiceException">Invalid User id</exception>
         public Ride[] GetRides(string userId)
         {
             try
@@ -56,9 +59,8 @@ namespace Cab_Invoice_Generator
             }
             catch (CabInvoiceException)
             {
-                throw new CabInvoiceException(CabInvoiceException.ExceptionType.Invalid_UserID, "Invalid UserID");
+                throw new CabInvoiceException(CabInvoiceException.ExceptionType.INVALID_USER_ID, "Invalid User id");
             }
         }
-
     }
 }
