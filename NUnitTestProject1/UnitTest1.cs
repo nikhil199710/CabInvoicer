@@ -53,6 +53,7 @@ namespace CabInvoiceTest
                 //Asserting Values
                 Assert.AreEqual(expected, e.Message);
             }
+
         }
         /// <summary>
         /// Given invalid distance throw exception.
@@ -98,6 +99,63 @@ namespace CabInvoiceTest
             {
                 //Asserting Values
                 Assert.AreEqual(expected, e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Given multiple rides return invoice summary.
+        /// </summary>
+        [Test]
+        public void GivenMultipleRides_ReturnInvoiceSummary()
+        {
+            //Creating Instance of InvoiceGenerator
+            invoiceGenerator = new InvoiceGenerator(RideType.Normal);
+            Ride[] rides = { new Ride(2.0, 5), new Ride(0.1, 1) };
+
+            //Generating Summary for Rides
+            InvoiceSummary summary = invoiceGenerator.CalculateFare(rides);
+            InvoiceSummary expectedSummary = new InvoiceSummary(2, 30.0);
+
+            //Asserting Values
+            Assert.AreEqual(expectedSummary, summary);
+        }
+
+        [Test]
+        public void GivenUserID_ReturnInvoiceSummary()
+        {
+            //Creating Instance of InvoiceGenerator
+            invoiceGenerator = new InvoiceGenerator(RideType.Normal);
+            Ride[] rides = { new Ride(2.0, 5), new Ride(0.1, 1) };
+
+            invoiceGenerator.AddRides("user1", rides);
+            //Generating Summary for Rides
+            InvoiceSummary summary = invoiceGenerator.GetInvoiceSummary("user1");
+            InvoiceSummary expectedSummary = new InvoiceSummary(2, 30.0);
+
+            //Asserting Values
+            Assert.AreEqual(expectedSummary, summary);
+        }
+        /// <summary>
+        /// Given null rides throw exception.
+        /// </summary>
+        [Test]
+        public void GivenNullRides_ThrowException()
+        {
+            //Creating Instance of InvoiceGenerator
+            invoiceGenerator = new InvoiceGenerator(RideType.Normal);
+
+            try
+            {
+                Ride[] rides = { null };
+                //Generating Summary for Rides
+                InvoiceSummary summary = invoiceGenerator.CalculateFare(rides);
+                InvoiceSummary expectedSummary = new InvoiceSummary(2, 30.0);
+            }
+
+            catch (CabInvoiceException e)
+            {
+                //Asserting Values
+                Assert.AreEqual("Rides are null", e.Message);
             }
         }
     }
