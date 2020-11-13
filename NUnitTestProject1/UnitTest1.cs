@@ -61,14 +61,14 @@ namespace CabInvoiceGenerator_NUnitTest
         }
 
         /// <summary>
-        /// UC4
+        /// UC5
         /// Givens the rides for different users should return invoice summary.
         /// </summary>
         [Test]
         public void GivenRidesForDifferentUsersShouldReturnInvoiceSummary()
         {
             //Creating instance of invoice generator 
-            InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+            InvoiceGenerator invoiceGenerator = new InvoiceGenerator(RideType.PREMIUM);
             Ride[] rides = { new Ride(2.0, 5), new Ride(0.1, 1) };
             string userId = "001";
             invoiceGenerator.AddRides(userId, rides);
@@ -77,7 +77,7 @@ namespace CabInvoiceGenerator_NUnitTest
             invoiceGenerator.AddRides(userIdForSecondUser, ridesForSecondUser);
             //Generating Summary for rides
             InvoiceSummary summary = invoiceGenerator.GetInvoiceSummary(userId);
-            InvoiceSummary expectedSummary = new InvoiceSummary(2, 30.0);
+            InvoiceSummary expectedSummary = new InvoiceSummary(2, 60.0);
             //Asserting values with average in equals to formula in invoice summary
             Assert.AreEqual(expectedSummary, summary);
         }
