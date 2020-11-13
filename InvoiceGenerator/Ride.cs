@@ -1,15 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Cab_Invoice_Generator
+﻿namespace CabInvoiceGenerator
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+    // <summary>
+    /// Ride class to set data for particular ride.  
+    /// </summary>
     public class Ride
     {
         /// <summary>
-        /// Distance and Time variables initiated
+        /// The distance
         /// </summary>
         public double distance;
+
+        /// <summary>
+        /// The time
+        /// </summary>
         public int time;
 
         /// <summary>
